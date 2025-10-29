@@ -29,3 +29,11 @@ export interface IHeaderProps {
 }
 
 export interface IToDoListProps  extends ITodoProps{}
+
+export interface IToDoModalProps {
+  isOpen: boolean, 
+  onClose: () => void,
+  newTitle: string, 
+  setNewTitle : (title:string) => void, 
+  handleAdd : () => void
+}

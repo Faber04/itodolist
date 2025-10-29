@@ -1,21 +1,13 @@
 import { useContext, useState } from "react";
 import {
   Box,
-  Input,
-  Button,
-  HStack,
   useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
 } from "@chakra-ui/react";
 import { AppContext } from "../context/AppContext";
 import ToDoActionButton from "./ui/ToDoActionButton";
 import ToDoHeader from "./ui/ToDoHeader";
 import ToDoList from "./ui/ToDoList";
+import ToDoModal from "./ui/ToDoModal";
 
 export default function TodoList() {
   const { todos, addTodo, toggleTodo, removeTodo } = useContext(AppContext);
@@ -40,38 +32,8 @@ export default function TodoList() {
     >
       <ToDoHeader>iToDo List</ToDoHeader>
       <ToDoList todos={todos} removeTodo={removeTodo} toggleTodo={toggleTodo} />
+      <ToDoModal isOpen={isOpen} handleAdd={handleAdd} newTitle={newTitle} onClose={onClose} setNewTitle={setNewTitle} />
       <ToDoActionButton onOpen={onOpen} />
-      <Modal
-        isOpen={isOpen}
-        onClose={onClose}
-        isCentered
-        motionPreset="slideInBottom"
-      >
-        <ModalOverlay />
-        <ModalContent mx={4}>
-          <ModalHeader>Aggiungi nuova todo</ModalHeader>
-          <ModalBody>
-            <Input
-              placeholder="Scrivi qui..."
-              value={newTitle}
-              onChange={(e) => setNewTitle(e.target.value)}
-              size="md"
-              borderRadius="md"
-              autoFocus
-            />
-          </ModalBody>
-          <ModalFooter>
-            <HStack w="100%" justify="flex-end">
-              <Button variant="ghost" onClick={onClose}>
-                Annulla
-              </Button>
-              <Button colorScheme="teal" onClick={handleAdd}>
-                Aggiungi
-              </Button>
-            </HStack>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
     </Box>
   );
 }
