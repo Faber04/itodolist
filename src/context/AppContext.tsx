@@ -9,7 +9,10 @@ export const AppContext = createContext<AppContextType>({
 });
 
 export const AppProvider = ({ children }: AppProviderProps) => {
-  const [todos, setTodos] = useState<ITodo[]>([]);
+  const LOCAL_STORAGE = 'itodos:data';
+  const ls = localStorage.getItem(LOCAL_STORAGE);
+  const initialData = ls ? JSON.parse(ls) : [];
+  const [todos, setTodos] = useState<ITodo[]>(initialData);
 
   const addTodo = (text:string) => {
     const newToDo : ITodo = {
@@ -17,20 +20,24 @@ export const AppProvider = ({ children }: AppProviderProps) => {
         title: text,
         completed: false
     };
-    setTodos([...todos, newToDo]);
+    const all = [...todos, newToDo];
+    saveData(all);
   }
 
   const toggleTodo = (id: number) => {
-    setTodos(
-      todos.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      )
-    );
+    const toggledTodo = todos.map((todo) => todo.id === id ? { ...todo, completed: !todo.completed} : todo);
+    saveData(toggledTodo);
   };
 
   const removeTodo = (id: number) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
+    const todoClean = todos.filter((todo) => todo.id !== id);
+    saveData(todoClean);
   };
+
+  const saveData = (_todos:ITodo[]) => {
+    setTodos(_todos);
+    localStorage.setItem(LOCAL_STORAGE, JSON.stringify(_todos));
+  }
 
   return (
     <AppContext.Provider value={{ todos, addTodo, toggleTodo, removeTodo }}>
