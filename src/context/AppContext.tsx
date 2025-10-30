@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { ITodo, AppContextType, AppProviderProps } from "../types/types";
 
 export const AppContext = createContext<AppContextType>({
@@ -9,35 +9,37 @@ export const AppContext = createContext<AppContextType>({
 });
 
 export const AppProvider = ({ children }: AppProviderProps) => {
-  const LOCAL_STORAGE = 'itodos:data';
-  const ls = localStorage.getItem(LOCAL_STORAGE);
-  const initialData = ls ? JSON.parse(ls) : [];
+  const LOCAL_STORAGE = "itodos:data";
+  const initialData = (() => {
+    if (typeof window === "undefined") return [];
+    const ls = localStorage.getItem(LOCAL_STORAGE);
+    return ls ? JSON.parse(ls) : [];
+  })();
   const [todos, setTodos] = useState<ITodo[]>(initialData);
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE, JSON.stringify(todos));
+  }, [todos]);
 
-  const addTodo = (text:string) => {
-    const newToDo : ITodo = {
-        id: Date.now(),
-        title: text,
-        completed: false
+  const addTodo = (text: string) => {
+    const newToDo: ITodo = {
+      id: Date.now(),
+      title: text,
+      completed: false,
     };
-    const allTodos = [...todos, newToDo];
-    saveData(allTodos);
-  }
+    setTodos([...todos, newToDo]);
+  };
 
   const toggleTodo = (id: number) => {
-    const toggledTodo = todos.map((todo) => todo.id === id ? { ...todo, completed: !todo.completed} : todo);
-    saveData(toggledTodo);
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
+    );
   };
 
   const removeTodo = (id: number) => {
-    const todoCleaned = todos.filter((todo) => todo.id !== id);
-    saveData(todoCleaned);
+    setTodos(todos.filter((todo) => todo.id !== id));
   };
-
-  const saveData = (_todos:ITodo[]) => {
-    setTodos(_todos);
-    localStorage.setItem(LOCAL_STORAGE, JSON.stringify(_todos));
-  }
 
   return (
     <AppContext.Provider value={{ todos, addTodo, toggleTodo, removeTodo }}>
