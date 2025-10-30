@@ -20,8 +20,8 @@ export const AppProvider = ({ children }: AppProviderProps) => {
         title: text,
         completed: false
     };
-    const all = [...todos, newToDo];
-    saveData(all);
+    const allTodos = [...todos, newToDo];
+    saveData(allTodos);
   }
 
   const toggleTodo = (id: number) => {
@@ -30,8 +30,8 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   };
 
   const removeTodo = (id: number) => {
-    const todoClean = todos.filter((todo) => todo.id !== id);
-    saveData(todoClean);
+    const todoCleaned = todos.filter((todo) => todo.id !== id);
+    saveData(todoCleaned);
   };
 
   const saveData = (_todos:ITodo[]) => {
