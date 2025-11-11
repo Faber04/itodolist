@@ -1,11 +1,11 @@
 
-import TodoList from "./components/TodoList";
+import TodoListContainer from "./components/TodoListContainer";
 import { AppProvider } from "./context/AppContext";
 
 function App() {
   return (
     <AppProvider>
-      <TodoList />
+      <TodoListContainer />
     </AppProvider>
   );
 }

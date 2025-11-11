@@ -10,7 +10,7 @@ export const AppContext = createContext<AppContextType>({
 
 export const AppProvider = ({ children }: AppProviderProps) => {
   const LOCAL_STORAGE = "itodos:data";
-  const initialData = (() => {
+  const initialData : ITodo[] = (() => {
     if (typeof window === "undefined") return [];
     const ls = localStorage.getItem(LOCAL_STORAGE);
     return ls ? JSON.parse(ls) : [];

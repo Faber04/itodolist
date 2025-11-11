@@ -9,7 +9,7 @@ import ToDoHeader from "./ui/ToDoHeader";
 import ToDoList from "./ui/ToDoList";
 import ToDoModal from "./ui/ToDoModal";
 
-export default function TodoList() {
+export default function TodoListContainer() {
   const { todos, addTodo, toggleTodo, removeTodo } = useContext(AppContext);
   const [newTitle, setNewTitle] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();

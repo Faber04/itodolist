@@ -7,12 +7,12 @@ export interface ITodo{
 }
 
 interface ITodoProps {
-  todos: ITodo[];
   toggleTodo: (id: number) => void;
   removeTodo: (id: number) => void;
 }
 
 export interface AppContextType extends ITodoProps {
+  todos: ITodo[];
   addTodo: (title: string) => void;
 }
 
@@ -28,7 +28,13 @@ export interface IHeaderProps {
   children: any;
 }
 
-export interface IToDoListProps  extends ITodoProps{}
+export interface IToDoListProps  extends ITodoProps{
+  todos: ITodo[];
+}
+
+export interface IToDoListItemProps extends ITodoProps {
+  todo: ITodo;
+}
 
 export interface IToDoModalProps {
   isOpen: boolean, 
